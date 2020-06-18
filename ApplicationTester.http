@@ -1,14 +1,14 @@
-GET http://localhost:8080/users/1
+GET http://localhost:8080/books/1
 Accept: application/json
 
 ###
-POST http://localhost:8080/users/create
+POST http://localhost:8080/books/create
 Content-Type: application/json
 
 {
   "id": 1,
-  "username": "Sazzad",
-  "password": "1234"
+  "name": "New Book",
+  "authorName": "New Author"
 }
 
 ###
