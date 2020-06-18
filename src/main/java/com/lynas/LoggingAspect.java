@@ -17,10 +17,11 @@ public class LoggingAspect {
             throws Throwable {
         ObjectMapper mapper = new ObjectMapper();
         Logger log = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
+        String methodName = joinPoint.getSignature().getName();
         Object[] input = joinPoint.getArgs();
-        log.info("Input [" + mapper.writeValueAsString(input) + "]");
+        log.info(methodName + "::Input [" + mapper.writeValueAsString(input) + "]");
         Object object = joinPoint.proceed();
-        log.info("Output [" + mapper.writeValueAsString(object) + "]");
+        log.info(methodName + "::Output [" + mapper.writeValueAsString(object) + "]");
         return object;
     }
 
