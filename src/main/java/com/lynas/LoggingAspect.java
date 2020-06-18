@@ -13,22 +13,21 @@ import org.springframework.stereotype.Component;
 public class LoggingAspect {
 
     @Around("@annotation(com.lynas.LogInputOutput)")
-    public Object logInputOutput(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object logInputOutput(ProceedingJoinPoint joinPoint)
+            throws Throwable {
         ObjectMapper mapper = new ObjectMapper();
-        String className = joinPoint.getTarget().getClass().toString();
-        String methodName = joinPoint.getSignature().getName();
-        Object[] array = joinPoint.getArgs();
-        final Object proceed = joinPoint.proceed();
-        Logger log = LoggerFactory.getLogger(className);
-        log.info("Input");
-        log.info(mapper.writeValueAsString(array));
-        log.info("Output");
-        log.info(mapper.writeValueAsString(proceed));
-        return proceed;
+        Logger log = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
+        Object[] input = joinPoint.getArgs();
+        log.info("Input [" + mapper.writeValueAsString(input) + "]");
+        Object object = joinPoint.proceed();
+        log.info("Output [" + mapper.writeValueAsString(object) + "]");
+        return object;
     }
 
+    // See execution time of a method in the controller package
     @Around("execution(* com.lynas.controller.*.*(..) )")
-    public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object logExecutionTime(ProceedingJoinPoint joinPoint)
+            throws Throwable {
         Long startTime = System.currentTimeMillis();
         String className = joinPoint.getTarget().getClass().toString();
         String methodName = joinPoint.getSignature().getName();
